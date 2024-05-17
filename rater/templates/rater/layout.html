@@ -5,14 +5,25 @@
     <head>
         <title>{% block title %}AlbumRater{% endblock %}</title>
         <link href="{% static 'rater/styles.css' %}" rel="stylesheet">
-        <script src="{% static 'rater/script.js' %}"></script>
+        <script type="module" src="{% static 'rater/script.js' %}"></script>
+        {% block script %}{% endblock %}
     </head>
     <body>
 
         <h1>AlbumRater</h1>
 
         <div class="nav">
-            
+            <ul id="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Saved albums</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Following</a>
+                </li>
+            </ul>
         </div>
 
         <div class="body">

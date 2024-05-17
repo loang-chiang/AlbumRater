@@ -1,0 +1,43 @@
+{% extends "rater/layout.html" %}
+
+{% block title %}Album{% endblock %}
+
+{% block script %}
+<script>
+    window.onload = function() {
+        console.log("THIS IS BEING CALLED");
+        let album = JSON.parse(localStorage.getItem('album'));
+
+        document.querySelector('#album-img').src = album.images[0].url;
+        console.log(album.name);
+        document.querySelector('#album-name').innerHTML = album.name;
+        document.querySelector('#album-release').innerHTML = `Release date: ${album.release_date}`;
+        document.querySelector('#album-total').innerHTML = `Total tracks: ${album.total_tracks}`;
+
+        for (let track of album.tracks.items) {
+            let li = document.createElement('li');
+            li.innerHTML = track.name;
+            document.querySelector('#album-ul').appendChild(li);
+        }
+
+        localStorage.removeItem('album');
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+
+    <img id="album-img">
+
+    <h1 id="album-name"></h1>
+
+    <h5 id="album-release"></h5>
+
+    <h5 id="album-total"></h5>
+
+    <hr>
+
+    <ul id="album-ul">
+    </ul>
+
+{% endblock %}

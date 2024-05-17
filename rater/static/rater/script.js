@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
-    get_token();
-    document.querySelector('#search-form').addEventListener('submit', function(event) {
-        let searchInput = document.querySelector('#album-name').value;
-        event.preventDefault();
-        search(searchInput);
-    });
+
+    // for when the user searches an album
+    let formElement = document.querySelector('#search-form');
+    if (formElement != null) {
+        get_token(); // only get token if in the index page
+
+        formElement.addEventListener('submit', function(event) {
+            let searchInput = document.querySelector('#album-name').value;
+            event.preventDefault();
+            search(searchInput);
+        });
+    }
 });
 
 // creates variable for access token and gets keys
@@ -54,7 +60,7 @@ async function search(searchInput) {
         },
     };
 
-    // fetches the album's ID
+    // fetches the albums
     await fetch (
         "https://api.spotify.com/v1/search?q=" + searchInput + "&type=album", albumParams
     )
@@ -67,19 +73,32 @@ async function search(searchInput) {
     // prints info to the console
     console.log("Search Input: " + searchInput);
     for (let album of albums) {
-        console.log("Album: " + album.id);
+        console.log("Album: " + album);
     }
 
     // creates divs to display the albums
     albums.forEach(album => {
         // creates elements
         let album_cont = document.createElement('div'); 
+        album_cont.classList.add('album-div');
+
+        // allows them to be clickable
+        album_cont.addEventListener('click', function() {
+            let albumID = album.id;
+            view_album(albumID);
+        });
+
         let image = document.createElement('img');
         image.src = album.images[0].url;
-        let name = document.createElement('h4');
-        name.innerHTML = album.name;
+        image.classList.add('album-img');
+
+        let name = document.createElement('h2');
+        name.textContent = album.name;
+        name.classList.add('album-name');
+
         let release_date = document.createElement('h4');
         release_date.innerHTML = 'Release date:' + album.release_date;
+        release_date.classList.add('album-release');
 
         // adds them to container
         album_cont.appendChild(image);
@@ -89,4 +108,42 @@ async function search(searchInput) {
         // adds them to the body
         document.body.appendChild(album_cont);
     })
+}
+
+
+// saves data
+async function view_album(albumID) {
+    console.log("Calling view_album function");
+
+    // gets the search parameters
+    let albumParams = {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + access_token,
+        },
+    };
+
+    // fetch album data from id
+    let album = await fetch (
+        "https://api.spotify.com/v1/albums/" + albumID, albumParams
+    )
+    .then(result => result.json())
+    .then(data => {
+        return data;
+    })
+
+    // create variables to send data
+    let tracks = [];
+    for (let track of album.tracks.items) {
+        tracks.push(track.name);
+    }
+
+    // saves variables in local storage
+    localStorage.setItem('album', JSON.stringify(album));
+
+    // navigates to new page
+    window.location.href = '/album';
+
+    // there's some extra js inside the album.html file that fills it with the album's data :)
 }
