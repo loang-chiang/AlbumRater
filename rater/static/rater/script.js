@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
             search(searchInput);
         });
     }
+
+    let btn = document.querySelector('#save-album')
 });
 
 // creates variable for access token and gets keys
@@ -97,7 +99,7 @@ async function search(searchInput) {
         name.classList.add('album-name');
 
         let release_date = document.createElement('h4');
-        release_date.innerHTML = 'Release date:' + album.release_date;
+        release_date.innerHTML = 'Release date: ' + album.release_date;
         release_date.classList.add('album-release');
 
         // adds them to container

@@ -5,11 +5,11 @@
 {% block script %}
 <script>
     window.onload = function() {
-        console.log("THIS IS BEING CALLED");
         let album = JSON.parse(localStorage.getItem('album'));
 
+        console.log(`You're viewing: ${album.name}`);
+
         document.querySelector('#album-img').src = album.images[0].url;
-        console.log(album.name);
         document.querySelector('#album-name').innerHTML = album.name;
         document.querySelector('#album-release').innerHTML = `Release date: ${album.release_date}`;
         document.querySelector('#album-total').innerHTML = `Total tracks: ${album.total_tracks}`;
@@ -19,8 +19,6 @@
             li.innerHTML = track.name;
             document.querySelector('#album-ul').appendChild(li);
         }
-
-        localStorage.removeItem('album');
     }
 </script>
 {% endblock %}
@@ -30,6 +28,17 @@
     <img id="album-img">
 
     <h1 id="album-name"></h1>
+
+    {% if user.is_authenticated %}
+        <i class="bi bi-star" id="one-star"></i>
+        <i class="bi bi-star" id="two-stars"></i>
+        <i class="bi bi-star" id="three-stars"></i>
+        <i class="bi bi-star" id="four-stars"></i>
+        <i class="bi bi-star" id="five-stars"></i>
+        <button id="rate-album">Rate and save</button>
+    {% else %}
+        <p>Log in or register to rate album!</p>
+    {% endif %}
 
     <h5 id="album-release"></h5>
 
