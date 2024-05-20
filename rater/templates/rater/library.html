@@ -21,6 +21,34 @@
                     album.appendChild(star);
                 }
             })
+
+            // appears/hides album order views depending on select
+            document.querySelector("#sort-library").onchange = function() {
+                if (this.value == "option-new") {
+                    document.querySelector("#cont-new").style.display = 'block';
+                    document.querySelector("#cont-old").style.display = 'none';
+                    document.querySelector("#cont-high").style.display = 'none';
+                    document.querySelector("#cont-low").style.display = 'none';
+                }
+                else if (this.value == "option-old") {
+                    document.querySelector("#cont-new").style.display = 'none';
+                    document.querySelector("#cont-old").style.display = 'block';
+                    document.querySelector("#cont-high").style.display = 'none';
+                    document.querySelector("#cont-low").style.display = 'none';
+                }
+                else if (this.value == "option-high") {
+                    document.querySelector("#cont-new").style.display = 'none';
+                    document.querySelector("#cont-old").style.display = 'none';
+                    document.querySelector("#cont-high").style.display = 'block';
+                    document.querySelector("#cont-low").style.display = 'none';
+                }
+                else {
+                    document.querySelector("#cont-new").style.display = 'none';
+                    document.querySelector("#cont-old").style.display = 'none';
+                    document.querySelector("#cont-high").style.display = 'none';
+                    document.querySelector("#cont-low").style.display = 'block';
+                }
+            }
         }
     </script>
 {% endblock %}
@@ -30,11 +58,11 @@
     <h1>Library</h1>
 
     <span>Sort by</span>
-    <select>
-        <option id="option-new">Most recent</option>
-        <option id="option-old">Oldest</option>
-        <option id="option-high">Highest rated</option>
-        <option id="option-low">Lowest rated</option>
+    <select id="sort-library">
+        <option value="option-new">Most recent</option>
+        <option value="option-old">Oldest</option>
+        <option value="option-high">Highest rated</option>
+        <option value="option-low">Lowest rated</option>
     </select>
 
     <div id="cont-new">
@@ -47,8 +75,6 @@
         {% endfor %}
     </div>
 
-    <hr>
-
     <div id="cont-old">
         {% for rating in by_old %}
             <div class="album-div" data-stars="{{ rating.rating }}">
@@ -59,8 +85,6 @@
         {% endfor %}
     </div>
 
-    <hr>
-
     <div id="cont-high">
         {% for rating in by_high %}
             <div class="album-div" data-stars="{{ rating.rating }}">
@@ -70,8 +94,6 @@
             </div>
         {% endfor %}
     </div>
-
-    <hr>
 
     <div id="cont-low">
         {% for rating in by_low %}
