@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // for when the user searches an album
     let formElement = document.querySelector('#search-form');
     if (formElement != null) {
-        get_token(); // only get token if in the index page
+        get_token(); // only gets token if in the index page
 
         formElement.addEventListener('submit', function(event) {
             let searchInput = document.querySelector('#album-name').value;
@@ -12,12 +12,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    let btn = document.querySelector('#save-album')
+    // if the album is unsaved, lets user change the star rating
+    let fluid = document.querySelectorAll('#stars-fluid'); 
+    if (fluid.length > 0) {
+        document.querySelectorAll('.bi-star, .bi-star-fill').forEach(star => {
+            star.addEventListener('click', () => {
+                let valueStr = star.dataset.value;
+                let value = parseInt(valueStr);
+                rate(value);
+            })
+        })
+    }
+
+    // saves and unsaves album
+    document.body.addEventListener('click', function(event) {
+        // gets album from local memory
+        let album = JSON.parse(localStorage.getItem('album'));
+
+        if (event.target.classList.contains('save-btn')) {
+            let rating = 0;
+            rating = parseInt((localStorage.getItem('rating')));
+
+            save_album(album, rating); // saves album to database
+        }
+        else if (event.target.classList.contains('unsave-btn')) {
+            unsave_album(album);  // unsaves album
+        }
+    });
+
 });
+
 
 // creates variable for access token and gets keys
 import { clientId, clientSecret } from './config.js';
 let access_token;
+
 
 // gets api token
 function get_token() {
@@ -45,6 +74,7 @@ function get_token() {
         access_token = data.access_token;
     });
 }
+
 
 // search function for albums
 async function search(searchInput) {
@@ -144,8 +174,88 @@ async function view_album(albumID) {
     // saves variables in local storage
     localStorage.setItem('album', JSON.stringify(album));
 
-    // navigates to new page
-    window.location.href = '/album';
+    // runs album python function
+    fetch(`/album/${album.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+    })
+    .then(result => {
+        // navigates to new page
+        window.location.href = `/album/${album.id}`;
+    })
 
     // there's some extra js inside the album.html file that fills it with the album's data :)
+}
+
+
+// changes the value of the album's rating
+function rate(value) {
+    console.log(`Calling the rate function for ${value} stars!`);
+
+    document.querySelectorAll('.bi-star, .bi-star-fill').forEach(star => {
+        if (star.dataset.value <= value && star.classList[1] == 'bi-star') {
+            star.classList.replace('bi-star', 'bi-star-fill');
+        }
+        else if (star.dataset.value > value && star.classList[1] == 'bi-star-fill') {
+            star.classList.replace('bi-star-fill', 'bi-star');
+        }
+    })
+    localStorage.setItem('rating', value);  // saves user rating to local storage
+}  
+
+
+// sends fetch request to backend to save album in database
+function save_album(album, rating) {
+    console.log(`Calling save_album with ${album.name} and ${rating} stars`);
+
+    if (rating == 0) {
+        document.querySelector('#rating-msg').style.display = block;
+        document.querySelector('#rating-msg').innerHTML = '<p>You need to rate the album to save it!</p>';
+    }
+    else {
+        // sends data to python func
+        fetch('/save_album', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                album: album.id,
+                rating: rating,
+            })
+        })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response["message"]);
+
+            // reloads page to reflect changes
+            window.location.href = `/album/${album.id}`;
+        })
+    }
+}
+
+
+// unsaves album from user's database
+function unsave_album(album) {
+    console.log(`Calling save_album with ${album.name}`);
+
+    // sends data to python func
+    fetch('/unsave_album', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            album: album.id,
+        })
+    })
+    .then(response => response.json())
+    .then(response => {
+        console.log(response["message"]);
+
+        // reloads page to reflect changes
+        window.location.href = `/album/${album.id}`;
+    })
 }

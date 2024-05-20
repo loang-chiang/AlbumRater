@@ -12,10 +12,15 @@ class User(AbstractUser):
 
 class Album(models.Model):
     id = models.CharField(max_length=1000, primary_key=True)
+    name = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return f"{self.name} with id {self.id}"
 
 class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_creator')
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    datetime = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField()
 
     def __str__(self):

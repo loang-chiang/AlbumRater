@@ -5,10 +5,14 @@
 {% block script %}
 <script>
     window.onload = function() {
+        // resets album rating
+        localStorage.setItem('rating', 0);
+
         let album = JSON.parse(localStorage.getItem('album'));
 
         console.log(`You're viewing: ${album.name}`);
 
+        // populates template with album's data
         document.querySelector('#album-img').src = album.images[0].url;
         document.querySelector('#album-name').innerHTML = album.name;
         document.querySelector('#album-release').innerHTML = `Release date: ${album.release_date}`;
@@ -30,12 +34,36 @@
     <h1 id="album-name"></h1>
 
     {% if user.is_authenticated %}
-        <i class="bi bi-star" id="one-star"></i>
-        <i class="bi bi-star" id="two-stars"></i>
-        <i class="bi bi-star" id="three-stars"></i>
-        <i class="bi bi-star" id="four-stars"></i>
-        <i class="bi bi-star" id="five-stars"></i>
-        <button id="rate-album">Rate and save</button>
+
+        {% if not in_database %}
+            <!-- these stars can be changed -->
+            <div id="stars-fluid">
+                <i class="bi bi-star" id="one-star" data-value="1"></i>
+                <i class="bi bi-star" id="two-stars"  data-value="2"></i>
+                <i class="bi bi-star" id="three-stars"  data-value="3"></i>
+                <i class="bi bi-star" id="four-stars"  data-value="4"></i>
+                <i class="bi bi-star" id="five-stars"  data-value="5"></i>
+            </div>
+        {% else %}
+            <!-- these stars can't -->
+            <div id="stars-set">
+                {% for i in rating %}
+                <i class="bi bi-star-fill"></i>
+                {% endfor %}
+                {% for i in empty %}
+                    <i class="bi bi-star"></i>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if not in_database %}  
+            <button class="save-btn">Rate and save!</button>
+        {% else %}
+            <button class="unsave-btn">Unsave</button>
+        {% endif %}
+
+        <div id="rating-msg">
+        </div>
     {% else %}
         <p>Log in or register to rate album!</p>
     {% endif %}
