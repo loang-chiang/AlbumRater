@@ -40,6 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 
+
 });
 
 
@@ -222,7 +224,10 @@ function save_album(album, rating) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                album: album.id,
+                albumID: album.id,
+                albumName: album.name,
+                albumImg: album.images[0].url,
+                albumRelease: album.release_date,
                 rating: rating,
             })
         })

@@ -1,0 +1,86 @@
+{% extends "rater/layout.html" %}
+
+{% block title %}Library{% endblock %}
+
+{% block script %}
+    <script>
+        window.onload = function() {
+            // displays stars for each rating 
+            document.querySelectorAll(".album-div").forEach(album => {
+                rating = parseInt(album.dataset.stars)
+                for (let i = 0; i < rating; i++) {
+                    // create as many stars as the rating
+                    let star = document.createElement('i');
+                    star.classList.add('bi-star-fill');
+                    album.appendChild(star);
+                }
+                for (let i = 0; i < (5 - rating); i++) {
+                    // add the empty stars to complete 5
+                    let star = document.createElement('i');
+                    star.classList.add('bi-star');
+                    album.appendChild(star);
+                }
+            })
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Library</h1>
+
+    <span>Sort by</span>
+    <select>
+        <option id="option-new">Most recent</option>
+        <option id="option-old">Oldest</option>
+        <option id="option-high">Highest rated</option>
+        <option id="option-low">Lowest rated</option>
+    </select>
+
+    <div id="cont-new">
+        {% for rating in by_new %}
+            <div class="album-div" data-stars="{{ rating.rating }}">
+                <img class="album-img" src="{{ rating.album.img }}">
+                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h4 class="album-release">{{ rating.album.release }}</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div id="cont-old">
+        {% for rating in by_old %}
+            <div class="album-div" data-stars="{{ rating.rating }}">
+                <img class="album-img" src="{{ rating.album.img }}">
+                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h4 class="album-release">{{ rating.album.release }}</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div id="cont-high">
+        {% for rating in by_high %}
+            <div class="album-div" data-stars="{{ rating.rating }}">
+                <img class="album-img" src="{{ rating.album.img }}">
+                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h4 class="album-release">{{ rating.album.release }}</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+
+    <div id="cont-low">
+        {% for rating in by_low %}
+            <div class="album-div" data-stars="{{ rating.rating }}">
+                <img class="album-img" src="{{ rating.album.img }}">
+                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h4 class="album-release">{{ rating.album.release }}</h4>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -22,11 +22,11 @@ def album(request, album_id):
     in_database = profile.saved_albums.filter(pk=album_id).exists()
 
     # gets rating for template rendering
-    album = Album.objects.get(id=album_id)
     try:
+        album = Album.objects.get(id=album_id)
         ratingObj = Rating.objects.get(user=profile, album=album)
         rating = ratingObj.rating
-    except Rating.DoesNotExist:
+    except (Rating.DoesNotExist, Album.DoesNotExist):
         rating = 0
 
     if rating != 0:
@@ -46,14 +46,19 @@ def album(request, album_id):
 def save_album(request):
     # gets info from json data
     data = json.loads(request.body)
-    albumID = data.get("album")
+    albumID = data.get("albumID")
     rating = data.get("rating")
 
     # checks if the album is in database and adds it if it isn't
     if Album.objects.filter(id=albumID).exists():
         album = Album.objects.get(id=albumID)
     else:
-        album = Album(id=albumID)
+        album = Album(
+            id = albumID,
+            name = data.get("albumName"),
+            img = data.get("albumImg"),
+            release = data.get("albumRelease")
+        )
         album.save()
 
     # adds rating to database
@@ -67,7 +72,10 @@ def save_album(request):
         )
         rating.save()
 
-    # adds album to user's saved_albums
+    # adds rating to user's ratings
+    request.user.ratings.add(rating)
+
+    # adds album to user's saved albums
     request.user.saved_albums.add(album)
 
     return JsonResponse({"message": "Album saved successfully."}, status=201) 
@@ -89,6 +97,23 @@ def unsave_album(request):
     rating.delete()
 
     return JsonResponse({"message": "Album unsaved successfully."}, status=201) 
+
+
+# loads library page
+def library(request):
+    # orders saved albums and adds stars 
+    by_new = request.user.ratings.all().order_by('-datetime')  # from newest rated
+    by_old = request.user.ratings.all().order_by('datetime')  # from oldest rated
+    by_high = request.user.ratings.all().order_by('-rating')  # from highest rated
+    by_low = request.user.ratings.all().order_by('rating')  # from lowest rated
+    
+    # renders library page
+    return render(request, "rater/library.html", {
+        'by_new': by_new,
+        'by_old': by_old,
+        'by_high': by_high,
+        'by_low': by_low
+    })
 
 
 # allows user to log into their accounts

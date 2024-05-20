@@ -8,11 +8,14 @@ class User(AbstractUser):
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_set')
     followers = models.ManyToManyField('self', related_name='is_following', symmetrical=False, blank=True)
     following = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
-    saved_albums = models.ManyToManyField('Album', related_name='saved_by', symmetrical=False, blank=True)
+    saved_albums = models.ManyToManyField('Album', related_name='album_saved_by', symmetrical=False, blank=True)
+    ratings = models.ManyToManyField('Rating', related_name='rated_by', symmetrical=False, blank=True)
 
 class Album(models.Model):
     id = models.CharField(max_length=1000, primary_key=True)
     name = models.CharField(max_length=1000)
+    img = models.CharField(max_length=1000)
+    release = models.CharField(max_length=100)
 
     def __str__(self):
         return f"{self.name} with id {self.id}"

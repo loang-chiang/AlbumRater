@@ -3,28 +3,28 @@
 {% block title %}Album{% endblock %}
 
 {% block script %}
-<script>
-    window.onload = function() {
-        // resets album rating
-        localStorage.setItem('rating', 0);
+    <script>
+        window.onload = function() {
+            // resets album rating
+            localStorage.setItem('rating', 0);
 
-        let album = JSON.parse(localStorage.getItem('album'));
+            let album = JSON.parse(localStorage.getItem('album'));
 
-        console.log(`You're viewing: ${album.name}`);
+            console.log(`You're viewing: ${album.name}`);
 
-        // populates template with album's data
-        document.querySelector('#album-img').src = album.images[0].url;
-        document.querySelector('#album-name').innerHTML = album.name;
-        document.querySelector('#album-release').innerHTML = `Release date: ${album.release_date}`;
-        document.querySelector('#album-total').innerHTML = `Total tracks: ${album.total_tracks}`;
+            // populates template with album's data
+            document.querySelector('#album-img').src = album.images[0].url;
+            document.querySelector('#album-name').innerHTML = album.name;
+            document.querySelector('#album-release').innerHTML = `Release date: ${album.release_date}`;
+            document.querySelector('#album-total').innerHTML = `Total tracks: ${album.total_tracks}`;
 
-        for (let track of album.tracks.items) {
-            let li = document.createElement('li');
-            li.innerHTML = track.name;
-            document.querySelector('#album-ul').appendChild(li);
+            for (let track of album.tracks.items) {
+                let li = document.createElement('li');
+                li.innerHTML = track.name;
+                document.querySelector('#album-ul').appendChild(li);
+            }
         }
-    }
-</script>
+    </script>
 {% endblock %}
 
 {% block body %}
