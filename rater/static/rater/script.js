@@ -40,8 +40,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 
-
+    // like and unlike rating
+    document.body.addEventListener('click', function(event) {
+        let ratingID = event.target.dataset.ratingId;
+        if (event.target.classList.contains('bi-heart')) {
+            like_rating(ratingID);
+        }
+        else if (event.target.classList.contains('bi-heart-fill')) {
+            unlike_rating(ratingID);
+        }
+    });
 });
 
 
@@ -262,5 +270,53 @@ function unsave_album(album) {
 
         // reloads page to reflect changes
         window.location.href = `/album/${album.id}`;
+    })
+}
+
+// likes a rating
+function like_rating(ratingID) {
+    console.log("Calling like_rating function");
+
+    // sends data to python func
+    fetch('/like_rating', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            ratingID: ratingID,
+        })
+    })
+    .then(response => response.json())
+    .then(response => {
+        console.log(response["message"]);
+
+        // updates innerHTML to reflect new like
+        document.querySelector(`#like-count-${ratingID}`).innerHTML = response["likes"];
+        document.querySelector(`#like-btn-${ratingID}`).classList.replace('bi-heart', 'bi-heart-fill');
+    })
+}
+
+// unlikes a rating
+function unlike_rating(ratingID) {
+    console.log("Calling unlike_rating function");
+
+    // sends data to python func
+    fetch('/unlike_rating', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            ratingID: ratingID,
+        })
+    })
+    .then(response => response.json())
+    .then(response => {
+        console.log(response["message"]);
+
+        // update innerHTML to reflect one less like
+        document.querySelector(`#like-count-${ratingID}`).innerHTML = response["likes"];
+        document.querySelector(`#like-btn-${ratingID}`).classList.replace('bi-heart-fill', 'bi-heart');
     })
 }

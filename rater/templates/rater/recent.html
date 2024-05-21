@@ -1,0 +1,49 @@
+{% extends "rater/layout.html" %}
+
+{% block title %}Recent{% endblock %}
+
+{% block body %}
+
+    <ul id="ratings-container">
+        {% for rating in page_obj %}
+            <li id="rating-container">
+                <h5>
+                    <!-- <a id="post-user" href="{% url 'profile' rating.user %}">{{ rating.user.name }}</a> -->
+                </h5>
+
+                <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
+                <img src="{{ rating.album.img }}">
+                <p>{{ rating.datetime }}</p>
+
+                {% if rating in liked_ratings %}
+                    <i class="bi bi-heart-fill" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                {% else %}
+                    <i class="bi bi-heart" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                {% endif %}
+                <span class="like-count" id="like-count-{{ rating.id }}">{{ rating.likes }}</span>
+            </li>
+        {% empty %}
+            <p>No ratings yet!</p>
+        {% endfor %}
+    </ul>
+
+    <!-- pagination is done thanks to django paginator class -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a class="pagination-btn" href="?page=1">&laquo; first</a>
+                <a class="pagination-btn" href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="pagination-btn">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a class="pagination-btn" href="?page={{ page_obj.next_page_number }}">next</a>
+                <a class="pagination-btn" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% endblock %}

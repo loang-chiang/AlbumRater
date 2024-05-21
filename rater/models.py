@@ -9,6 +9,7 @@ class User(AbstractUser):
     followers = models.ManyToManyField('self', related_name='is_following', symmetrical=False, blank=True)
     following = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
     saved_albums = models.ManyToManyField('Album', related_name='album_saved_by', symmetrical=False, blank=True)
+    liked_ratings = models.ManyToManyField('Rating', related_name='liked_by', symmetrical=False, blank=True)
     ratings = models.ManyToManyField('Rating', related_name='rated_by', symmetrical=False, blank=True)
 
 class Album(models.Model):
@@ -25,6 +26,7 @@ class Rating(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     datetime = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField()
+    likes = models.IntegerField() 
 
     def __str__(self):
         return f"{self.user} gave {self.rating} stars to {self.album}"

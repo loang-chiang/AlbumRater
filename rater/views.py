@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+from django.core.paginator import Paginator  # to paginate through ratings
 from datetime import datetime  # used when saving albums
 from django.views.decorators.csrf import csrf_exempt  # useful for post requests that come from js
 
@@ -115,6 +116,75 @@ def library(request):
         'by_low': by_low
     })
 
+
+# loads recent page
+def recent(request):
+    # creates a paginator object with all posts ordered from most recentß
+    p = Paginator(Rating.objects.all().order_by('-datetime'), 10)
+
+    # gets the correct page
+    page_number = request.GET.get('page')
+    page_obj = p.get_page(page_number)
+
+    # get user's liked ratings
+    liked_ratings = []
+    if request.user.is_authenticated:
+        liked_ratings = request.user.liked_ratings.all()
+
+    return render(request, "rater/recent.html", {
+        "page_obj": page_obj,
+        "liked_ratings": liked_ratings
+    })
+
+# likes a rating update
+@csrf_exempt
+def like_rating(request):
+    # gets data from js 
+    data = json.loads(request.body)
+    ratingID = data.get("ratingID")
+    print(ratingID)
+    
+    try:
+        rating = Rating.objects.get(id=ratingID)
+    except:
+        return JsonResponse({"error": "Post does not exist."}, status=400)
+
+    rating.likes = rating.likes + 1
+    rating.save()
+
+    # saves post to user's liked_posts
+    request.user.liked_ratings.add(rating)
+
+    return JsonResponse({"message": "Rating liked successfully.", "likes": rating.likes}, status=201)
+
+
+# unlikes a rating update
+@csrf_exempt
+def unlike_rating(request):
+    # gets data from js 
+    data = json.loads(request.body)
+    ratingID = data.get("ratingID")
+    
+    try:
+        rating = Rating.objects.get(id=ratingID)
+    except:
+        return JsonResponse({"error": "Post does not exist."}, status=400)
+
+    rating.likes = rating.likes - 1
+    rating.save()
+
+    # removes post to user's liked_posts
+    request.user.liked_ratings.remove(rating)
+
+    return JsonResponse({"message": "Rating unliked successfully.", "likes": rating.likes}, status=201)
+
+
+# loads profile page for any user
+def profile(request, username):
+    return render(request, "rater/profile.html")
+
+
+# REGISTER LOGIN AND LOGOUT FUNCTIONS
 
 # allows user to log into their accounts
 def login_view(request):
