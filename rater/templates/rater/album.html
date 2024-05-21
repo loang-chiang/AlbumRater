@@ -33,8 +33,14 @@
 
     <h1 id="album-name"></h1>
 
-    {% if user.is_authenticated %}
+    <h4>Review</h4>
+    {% if not in_database %}
+        <textarea id="review">{{ review }}</textarea>
+    {% else %}
+        <textarea id="review" readonly>{{ review }}</textarea>
+    {% endif %}
 
+    {% if user.is_authenticated %}
         {% if not in_database %}
             <!-- these stars can be changed -->
             <div id="stars-fluid">
@@ -61,9 +67,6 @@
         {% else %}
             <button class="unsave-btn">Unsave</button>
         {% endif %}
-
-        <div id="rating-msg">
-        </div>
     {% else %}
         <p>Log in or register to rate album!</p>
     {% endif %}

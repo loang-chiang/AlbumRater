@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // for when the user searches an album
     let formElement = document.querySelector('#search-form');
     if (formElement != null) {
-        get_token(); // only gets token if in the index page
+        get_token(); // only gets token if in the index or library pages
 
         formElement.addEventListener('submit', function(event) {
             let searchInput = document.querySelector('#album-name').value;
@@ -23,6 +23,25 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
     }
+    
+    // creates new token if in library view
+    let sortElement = document.querySelector('#sort-library');
+    if (sortElement != null) {
+        get_token(); // only gets token if in the index or library pages
+    }
+
+    // allows albums in library to be clickable and viewable 
+    document.body.addEventListener('click', function(event) {
+        let element = event.target;
+        while (element && !element.classList.contains('album-div')) {
+            element = element.parentElement;
+            console.log(element);
+        }
+        if (element.classList.contains('album-div')) {
+            let albumID = element.dataset.albumid;
+            view_album(albumID);
+        }
+    });
 
     // saves and unsaves album
     document.body.addEventListener('click', function(event) {
@@ -32,8 +51,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.classList.contains('save-btn')) {
             let rating = 0;
             rating = parseInt((localStorage.getItem('rating')));
+            let review = document.querySelector("#review").value;
 
-            save_album(album, rating); // saves album to database
+            save_album(album, rating, review); // saves album to database
         }
         else if (event.target.classList.contains('unsave-btn')) {
             unsave_album(album);  // unsaves album
@@ -217,12 +237,12 @@ function rate(value) {
 
 
 // sends fetch request to backend to save album in database
-function save_album(album, rating) {
+function save_album(album, rating, review) {
     console.log(`Calling save_album with ${album.name} and ${rating} stars`);
 
     if (rating == 0) {
-        document.querySelector('#rating-msg').style.display = block;
-        document.querySelector('#rating-msg').innerHTML = '<p>You need to rate the album to save it!</p>';
+        // shows user message
+        alert('You need to rate the album to save it!')
     }
     else {
         // sends data to python func
@@ -237,6 +257,7 @@ function save_album(album, rating) {
                 albumImg: album.images[0].url,
                 albumRelease: album.release_date,
                 rating: rating,
+                review: review
             })
         })
         .then(response => response.json())

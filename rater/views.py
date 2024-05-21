@@ -28,8 +28,10 @@ def album(request, album_id):
         album = Album.objects.get(id=album_id)
         ratingObj = Rating.objects.get(user=profile, album=album)
         rating = ratingObj.rating
+        review = ratingObj.review
     except (Rating.DoesNotExist, Album.DoesNotExist):
         rating = 0
+        review = "Write your review here!"
 
     if rating != 0:
         empty = 5 - rating
@@ -39,7 +41,8 @@ def album(request, album_id):
     return render(request, "rater/album.html", {
         "in_database": in_database,
         "rating": range(rating),
-        "empty": range(empty)
+        "empty": range(empty),
+        "review": review
     })
 
 
@@ -50,6 +53,7 @@ def save_album(request):
     data = json.loads(request.body)
     albumID = data.get("albumID")
     rating = data.get("rating")
+    review = data.get("review")
 
     # checks if the album is in database and adds it if it isn't
     if Album.objects.filter(id=albumID).exists():
@@ -70,7 +74,8 @@ def save_album(request):
             user = user,
             album = album,
             datetime = datetime.now(),
-            rating = rating
+            rating = rating,
+            review = review
         )
         rating.save()
 
@@ -184,10 +189,7 @@ def unlike_rating(request):
 def profile(request, username):
     # get the profile and relevant info
     profile = User.objects.get(username=username)
-    follower_count = profile.followers.count()
-    following_count = profile.following.count()
     ratings = Rating.objects.filter(user=profile).order_by('-datetime')
-    followed_users = request.user.following.all()
     rating_count = ratings.count()
 
     # gets user's average rating
@@ -197,9 +199,6 @@ def profile(request, username):
     # renders the template with said info
     return render(request, "rater/profile.html", {
         "profile": profile,
-        "followers": follower_count,
-        "following": following_count,
-        "followed_users": followed_users,
         "ratings": ratings,
         "liked_ratings": request.user.liked_ratings.all(),
         "rating_count": rating_count,

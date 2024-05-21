@@ -24,7 +24,8 @@ class Rating(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     datetime = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField()
-    likes = models.IntegerField() 
+    review = models.CharField(max_length=10000, blank=True)
+    likes = models.IntegerField(default=0) 
 
     def __str__(self):
         return f"{self.user} gave {self.rating} stars to {self.album}"
