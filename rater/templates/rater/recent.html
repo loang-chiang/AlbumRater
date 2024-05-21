@@ -8,7 +8,7 @@
         {% for rating in page_obj %}
             <li id="rating-container">
                 <h5>
-                    <!-- <a id="post-user" href="{% url 'profile' rating.user %}">{{ rating.user.name }}</a> -->
+                    <a id="rating-user" href="{% url 'profile' rating.user %}">{{ rating.user.username }}</a>
                 </h5>
 
                 <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>

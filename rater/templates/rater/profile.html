@@ -4,4 +4,40 @@
 
 {% block body %}
 
+    <div id="user-and-btns">
+        <h1 id="profile-username">{{ profile.username }}</h1>
+
+        {% if request.user != profile %}
+            {% if profile in followed_users %}
+                <button id="un-follow-btns" class="unfollow-btn" data-profile-id="{{ profile.id }}">Unfollow</button>
+            {% else %}
+                <button id="un-follow-btns" class="follow-btn" data-profile-id="{{ profile.id }}">Follow</button>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <h5 id="follower-count">Followers: {{ followers }}</h5>
+    <h5>Following: {{ following }}</h5>
+    <h5>Total ratings: {{ rating_count }}</h5>
+    <h5>Average rating: {{ average }}</h5>
+
+    <ul id="ratings-container">
+        {% for rating in ratings %}
+            <li id="rating-container">
+                <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
+                <img src="{{ rating.album.img }}">
+                <p>{{ rating.datetime }}</p>
+
+                {% if rating in liked_ratings %}
+                    <i class="bi bi-heart-fill" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                {% else %}
+                    <i class="bi bi-heart" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                {% endif %}
+                <span class="like-count" id="like-count-{{ rating.id }}">{{ rating.likes }}</span>
+            </li>
+        {% empty %}
+            <p>No ratings yet!</p>
+        {% endfor %}
+    </ul>
+
 {% endblock %}

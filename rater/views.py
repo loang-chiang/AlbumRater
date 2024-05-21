@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+from django.db.models import Sum  # to sum a user's ratings
 from django.core.paginator import Paginator  # to paginate through ratings
 from datetime import datetime  # used when saving albums
 from django.views.decorators.csrf import csrf_exempt  # useful for post requests that come from js
@@ -181,7 +182,29 @@ def unlike_rating(request):
 
 # loads profile page for any user
 def profile(request, username):
-    return render(request, "rater/profile.html")
+    # get the profile and relevant info
+    profile = User.objects.get(username=username)
+    follower_count = profile.followers.count()
+    following_count = profile.following.count()
+    ratings = Rating.objects.filter(user=profile).order_by('-datetime')
+    followed_users = request.user.following.all()
+    rating_count = ratings.count()
+
+    # gets user's average rating
+    total_ratings = Rating.objects.filter(user=profile).aggregate(Sum('rating'))  # this returns a dictionary
+    average = round(total_ratings['rating__sum'] / rating_count, 2)  # round off to two decimals
+
+    # renders the template with said info
+    return render(request, "rater/profile.html", {
+        "profile": profile,
+        "followers": follower_count,
+        "following": following_count,
+        "followed_users": followed_users,
+        "ratings": ratings,
+        "liked_ratings": request.user.liked_ratings.all(),
+        "rating_count": rating_count,
+        "average": average
+    })
 
 
 # REGISTER LOGIN AND LOGOUT FUNCTIONS

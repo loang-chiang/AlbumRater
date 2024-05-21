@@ -6,8 +6,6 @@ from django.db import models
 class User(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='custom_user_set')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_set')
-    followers = models.ManyToManyField('self', related_name='is_following', symmetrical=False, blank=True)
-    following = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True)
     saved_albums = models.ManyToManyField('Album', related_name='album_saved_by', symmetrical=False, blank=True)
     liked_ratings = models.ManyToManyField('Rating', related_name='liked_by', symmetrical=False, blank=True)
     ratings = models.ManyToManyField('Rating', related_name='rated_by', symmetrical=False, blank=True)
