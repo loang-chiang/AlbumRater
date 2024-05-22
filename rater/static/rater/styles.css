@@ -41,6 +41,10 @@
         font-weight: 400;
     }
 
+    a:hover {
+        color: #d60017;
+    }
+
     /* for smaller devices */
     @media only screen and (max-width: 1020px) {
         body {

@@ -6,14 +6,6 @@
 
     <h2 id="profile-username">{{ profile.username }}</h2>
 
-    {% if request.user != profile %}
-        {% if profile in followed_users %}
-            <button id="un-follow-btns" class="unfollow-btn" data-profile-id="{{ profile.id }}">Unfollow</button>
-        {% else %}
-            <button id="un-follow-btns" class="follow-btn" data-profile-id="{{ profile.id }}">Follow</button>
-        {% endif %}
-    {% endif %}
-
     <h5>Total ratings: {{ rating_count }}</h5>
     <h5>Average rating: {{ average }}</h5>
 
