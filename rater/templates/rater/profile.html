@@ -4,38 +4,54 @@
 
 {% block body %}
 
-    <div id="user-and-btns">
-        <h1 id="profile-username">{{ profile.username }}</h1>
+    <h2 id="profile-username">{{ profile.username }}</h2>
 
-        {% if request.user != profile %}
-            {% if profile in followed_users %}
-                <button id="un-follow-btns" class="unfollow-btn" data-profile-id="{{ profile.id }}">Unfollow</button>
-            {% else %}
-                <button id="un-follow-btns" class="follow-btn" data-profile-id="{{ profile.id }}">Follow</button>
-            {% endif %}
+    {% if request.user != profile %}
+        {% if profile in followed_users %}
+            <button id="un-follow-btns" class="unfollow-btn" data-profile-id="{{ profile.id }}">Unfollow</button>
+        {% else %}
+            <button id="un-follow-btns" class="follow-btn" data-profile-id="{{ profile.id }}">Follow</button>
         {% endif %}
-    </div>
+    {% endif %}
 
     <h5>Total ratings: {{ rating_count }}</h5>
     <h5>Average rating: {{ average }}</h5>
 
-    <ul id="ratings-container">
+    <div id="ratings-cont">
         {% for rating in ratings %}
-            <li id="rating-container">
-                <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
-                <img src="{{ rating.album.img }}">
-                <p>{{ rating.datetime }}</p>
+        <div id="rating-cont">
+            <div>
+                <img id="rating-img" src="{{ rating.album.img }}">
+            </div>
 
-                {% if rating in liked_ratings %}
-                    <i class="bi bi-heart-fill" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
-                {% else %}
-                    <i class="bi bi-heart" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+            <div id="rating-data">
+                <h5>
+                    <a id="rating-user">
+                        <strong>{{ rating.user.username }}</strong>
+                    </a>
+                </h5>
+
+                <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
+
+                {% if rating.review %}
+                    <p>"{{ rating.review }}"</p>
                 {% endif %}
-                <span class="like-count" id="like-count-{{ rating.id }}">{{ rating.likes }}</span>
-            </li>
+                
+                <div id="rating-likes-date">
+                    <p>{{ rating.datetime }}</p>
+
+                    {% if rating in liked_ratings %}
+                    <i class="bi bi-heart-fill" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                    {% else %}
+                        <i class="bi bi-heart" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                    {% endif %}
+                    <span class="like-count" id="like-count-{{ rating.id }}">{{ rating.likes }}</span>
+                </div>
+            </div>
+        </div>
         {% empty %}
             <p>No ratings yet!</p>
         {% endfor %}
-    </ul>
+    </div>
 
 {% endblock %}

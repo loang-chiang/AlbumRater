@@ -14,6 +14,7 @@ class Album(models.Model):
     id = models.CharField(max_length=1000, primary_key=True)
     name = models.CharField(max_length=1000)
     img = models.CharField(max_length=1000)
+    artist = models.CharField(max_length=100)
     release = models.CharField(max_length=100)
 
     def __str__(self):

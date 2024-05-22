@@ -15,13 +15,14 @@
             // populates template with album's data
             document.querySelector('#album-img').src = album.images[0].url;
             document.querySelector('#album-name').innerHTML = album.name;
-            document.querySelector('#album-release').innerHTML = `Release date: ${album.release_date}`;
-            document.querySelector('#album-total').innerHTML = `Total tracks: ${album.total_tracks}`;
+            document.querySelector('#album-artist').innerHTML = `<strong>Artist: </strong>${album.artists[0].name}`;
+            document.querySelector('#album-release').innerHTML = `<strong>Release date: </strong>${album.release_date}`;
+            document.querySelector('#album-total').innerHTML = `<strong>Total tracks: </strong>${album.total_tracks}`;
 
             for (let track of album.tracks.items) {
                 let li = document.createElement('li');
                 li.innerHTML = track.name;
-                document.querySelector('#album-ul').appendChild(li);
+                document.querySelector('#album-ol').appendChild(li);
             }
         }
     </script>
@@ -29,55 +30,73 @@
 
 {% block body %}
 
-    <img id="album-img">
+    <div id="album-data-img">
+        <img id="album-img">
 
-    <h1 id="album-name"></h1>
-
-    <h4>Review</h4>
-    {% if not in_database %}
-        <textarea id="review">{{ review }}</textarea>
-    {% else %}
-        <textarea id="review" readonly>{{ review }}</textarea>
-    {% endif %}
+        <div id="album-data">
+            <h1 id="album-name"></h1>
+            <h5 id="album-artist"></h5>
+            <h5 id="album-release"></h5>
+            <h5 id="album-total"></h5>
+        </div>
+    </div>
 
     {% if user.is_authenticated %}
         {% if not in_database %}
-            <!-- these stars can be changed -->
-            <div id="stars-fluid">
-                <i class="bi bi-star" id="one-star" data-value="1"></i>
-                <i class="bi bi-star" id="two-stars"  data-value="2"></i>
-                <i class="bi bi-star" id="three-stars"  data-value="3"></i>
-                <i class="bi bi-star" id="four-stars"  data-value="4"></i>
-                <i class="bi bi-star" id="five-stars"  data-value="5"></i>
-            </div>
-        {% else %}
-            <!-- these stars can't -->
-            <div id="stars-set">
-                {% for i in rating %}
-                <i class="bi bi-star-fill"></i>
-                {% endfor %}
-                {% for i in empty %}
-                    <i class="bi bi-star"></i>
-                {% endfor %}
-            </div>
-        {% endif %}
+            <div id="rating-and-review">
+                <div id="rating">
+                    <h4>Rate this album</h4>
+                    <!-- these stars can be changed -->
+                    <div id="stars-fluid">
+                        <i class="bi bi-star" id="one-star" data-value="1"></i>
+                        <i class="bi bi-star" id="two-stars"  data-value="2"></i>
+                        <i class="bi bi-star" id="three-stars"  data-value="3"></i>
+                        <i class="bi bi-star" id="four-stars"  data-value="4"></i>
+                        <i class="bi bi-star" id="five-stars"  data-value="5"></i>
+                    </div>
+                </div>
 
-        {% if not in_database %}  
+                <div id="review-cont">
+                    <h4>Write a review!</h4>
+                    <textarea id="review">{{ review }}</textarea>
+                </div>
+            </div>
             <button class="save-btn">Rate and save!</button>
         {% else %}
+            <div id="rating-and-review">
+                <div id="rating">
+                    <h4>Your rating</h4>
+
+                    <!-- these stars can't be changed -->
+                    <div id="stars-set">
+                        {% for i in rating %}
+                        <i class="bi bi-star-fill"></i>
+                        {% endfor %}
+                        {% for i in empty %}
+                            <i class="bi bi-star"></i>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if review %}
+                    <div id="review-cont">
+                        <h4>Your review</h4>
+                        <textarea id="review" readonly>{{ review }}</textarea>
+                    </div>
+                {% endif %}
+            </div>
             <button class="unsave-btn">Unsave</button>
         {% endif %}
     {% else %}
-        <p>Log in or register to rate album!</p>
+        <p>Log in or register to save album!</p>
     {% endif %}
-
-    <h5 id="album-release"></h5>
-
-    <h5 id="album-total"></h5>
 
     <hr>
 
-    <ul id="album-ul">
-    </ul>
+    <div id="tracklist">
+        <h4>Tracklist</h4>
+        <ol id="album-ol">
+        </ol>
+    </div>
 
 {% endblock %}

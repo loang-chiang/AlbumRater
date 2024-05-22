@@ -4,33 +4,44 @@
 
 {% block body %}
 
-    <ul id="ratings-container">
+    <h2>Recent ratings</h2>
+
+    <div id="ratings-cont">
         {% for rating in page_obj %}
-            <li id="rating-container">
-                <h5>
-                    <a id="rating-user" href="{% url 'profile' rating.user %}">{{ rating.user.username }}</a>
-                </h5>
+            <div id="rating-cont">
+                <div>
+                    <img id="rating-img" src="{{ rating.album.img }}">
+                </div>
 
-                <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
+                <div id="rating-data">
+                    <h5>
+                        <a id="rating-user" href="{% url 'profile' rating.user %}">
+                            <strong>{{ rating.user.username }}</strong>
+                        </a>
+                    </h5>
+    
+                    <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
+    
+                    {% if rating.review %}
+                        <p>"{{ rating.review }}"</p>
+                    {% endif %}
+                    
+                    <div id="rating-likes-date">
+                        <p>{{ rating.datetime }}</p>
 
-                {% if rating.review %}
-                    <p>"{{ rating.review }}"</p>
-                {% endif %}
-
-                <img src="{{ rating.album.img }}">
-                <p>{{ rating.datetime }}</p>
-
-                {% if rating in liked_ratings %}
-                    <i class="bi bi-heart-fill" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
-                {% else %}
-                    <i class="bi bi-heart" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
-                {% endif %}
-                <span class="like-count" id="like-count-{{ rating.id }}">{{ rating.likes }}</span>
-            </li>
+                        {% if rating in liked_ratings %}
+                        <i class="bi bi-heart-fill" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                        {% else %}
+                            <i class="bi bi-heart" id="like-btn-{{ rating.id }}" data-rating-id="{{ rating.id }}"></i>
+                        {% endif %}
+                        <span class="like-count" id="like-count-{{ rating.id }}">{{ rating.likes }}</span>
+                    </div>
+                </div>
+            </div>
         {% empty %}
             <p>No ratings yet!</p>
         {% endfor %}
-    </ul>
+        </div>
 
     <!-- pagination is done thanks to django paginator class -->
     <div class="pagination">
@@ -40,7 +51,7 @@
                 <a class="pagination-btn" href="?page={{ page_obj.previous_page_number }}">previous</a>
             {% endif %}
 
-            <span class="pagination-btn">
+            <span>
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
             </span>
 

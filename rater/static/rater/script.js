@@ -35,9 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let element = event.target;
         while (element && !element.classList.contains('album-div')) {
             element = element.parentElement;
-            console.log(element);
         }
-        if (element.classList.contains('album-div')) {
+        if (element && element.classList.contains('album-div')) {
             let albumID = element.dataset.albumid;
             view_album(albumID);
         }
@@ -154,21 +153,31 @@ async function search(searchInput) {
         image.src = album.images[0].url;
         image.classList.add('album-img');
 
-        let name = document.createElement('h2');
+        let name = document.createElement('h3');
         name.textContent = album.name;
         name.classList.add('album-name');
 
-        let release_date = document.createElement('h4');
-        release_date.innerHTML = 'Release date: ' + album.release_date;
+        let artist_release = document.createElement('div');
+        artist_release.classList.add('album-artist-release');
+
+        let artist = document.createElement('h5');
+        artist.innerHTML = "<strong>Artist: </strong>" + album.artists[0].name;
+        artist.classList.add('album-artist');
+
+        let release_date = document.createElement('h5');
+        release_date.innerHTML = "<strong>Release date: </strong>" + album.release_date;
         release_date.classList.add('album-release');
+
+        artist_release.appendChild(artist);
+        artist_release.appendChild(release_date);
 
         // adds them to container
         album_cont.appendChild(image);
         album_cont.appendChild(name);
-        album_cont.appendChild(release_date);
+        album_cont.appendChild(artist_release);
 
-        // adds them to the body
-        document.body.appendChild(album_cont);
+        // adds them to albums' container
+        document.querySelector(".albums-cont").appendChild(album_cont);
     })
 }
 
@@ -255,6 +264,7 @@ function save_album(album, rating, review) {
                 albumID: album.id,
                 albumName: album.name,
                 albumImg: album.images[0].url,
+                albumArtist: album.artists[0].name,
                 albumRelease: album.release_date,
                 rating: rating,
                 review: review

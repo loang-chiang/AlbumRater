@@ -31,7 +31,7 @@ def album(request, album_id):
         review = ratingObj.review
     except (Rating.DoesNotExist, Album.DoesNotExist):
         rating = 0
-        review = "Write your review here!"
+        review = ""
 
     if rating != 0:
         empty = 5 - rating
@@ -63,6 +63,7 @@ def save_album(request):
             id = albumID,
             name = data.get("albumName"),
             img = data.get("albumImg"),
+            artist = data.get("albumArtist"),
             release = data.get("albumRelease")
         )
         album.save()

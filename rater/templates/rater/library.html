@@ -8,45 +8,50 @@
             // displays stars for each rating 
             document.querySelectorAll(".album-div").forEach(album => {
                 rating = parseInt(album.dataset.stars)
+                // create a container for the stars
+                let container = document.createElement('div');
+                container.id = "album-stars";
+                album.appendChild(container);
+
                 for (let i = 0; i < rating; i++) {
                     // create as many stars as the rating
                     let star = document.createElement('i');
                     star.classList.add('bi-star-fill');
-                    album.appendChild(star);
+                    container.appendChild(star);
                 }
                 for (let i = 0; i < (5 - rating); i++) {
                     // add the empty stars to complete 5
                     let star = document.createElement('i');
                     star.classList.add('bi-star');
-                    album.appendChild(star);
+                    container.appendChild(star);
                 }
             })
 
             // appears/hides album order views depending on select
             document.querySelector("#sort-library").onchange = function() {
                 if (this.value == "option-new") {
-                    document.querySelector("#cont-new").style.display = 'block';
+                    document.querySelector("#cont-new").style.display = 'flex';
                     document.querySelector("#cont-old").style.display = 'none';
                     document.querySelector("#cont-high").style.display = 'none';
                     document.querySelector("#cont-low").style.display = 'none';
                 }
                 else if (this.value == "option-old") {
                     document.querySelector("#cont-new").style.display = 'none';
-                    document.querySelector("#cont-old").style.display = 'block';
+                    document.querySelector("#cont-old").style.display = 'flex';
                     document.querySelector("#cont-high").style.display = 'none';
                     document.querySelector("#cont-low").style.display = 'none';
                 }
                 else if (this.value == "option-high") {
                     document.querySelector("#cont-new").style.display = 'none';
                     document.querySelector("#cont-old").style.display = 'none';
-                    document.querySelector("#cont-high").style.display = 'block';
+                    document.querySelector("#cont-high").style.display = 'flex';
                     document.querySelector("#cont-low").style.display = 'none';
                 }
                 else {
                     document.querySelector("#cont-new").style.display = 'none';
                     document.querySelector("#cont-old").style.display = 'none';
                     document.querySelector("#cont-high").style.display = 'none';
-                    document.querySelector("#cont-low").style.display = 'block';
+                    document.querySelector("#cont-low").style.display = 'flex';
                 }
             }
         }
@@ -55,7 +60,7 @@
 
 {% block body %}
 
-    <h1>Library</h1>
+    <h2>Library</h2>
 
     <span>Sort by</span>
     <select id="sort-library">
@@ -65,46 +70,50 @@
         <option value="option-low">Lowest rated</option>
     </select>
 
-    <div id="cont-new">
+    <div id="cont-new" class="albums-cont">
         {% for rating in by_new %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
                 <h2 class="album-name">{{ rating.album.name }}</h2>
-                <h4 class="album-review">{{ rating.review }}</h4>
-                <h4 class="album-release">{{ rating.album.release }}</h4>
+                <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
+                <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
+                <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
         {% endfor %}
     </div>
 
-    <div id="cont-old">
+    <div id="cont-old" class="albums-cont">
         {% for rating in by_old %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
                 <h2 class="album-name">{{ rating.album.name }}</h2>
-                <h4 class="album-review">{{ rating.review }}</h4>
-                <h4 class="album-release">{{ rating.album.release }}</h4>
+                <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
+                <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
+                <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
         {% endfor %}
     </div>
 
-    <div id="cont-high">
+    <div id="cont-high" class="albums-cont">
         {% for rating in by_high %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
                 <h2 class="album-name">{{ rating.album.name }}</h2>
-                <h4 class="album-review">{{ rating.review }}</h4>
-                <h4 class="album-release">{{ rating.album.release }}</h4>
+                <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
+                <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
+                <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
         {% endfor %}
     </div>
 
-    <div id="cont-low">
+    <div id="cont-low" class="albums-cont">
         {% for rating in by_low %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
                 <h2 class="album-name">{{ rating.album.name }}</h2>
-                <h4 class="album-review">{{ rating.review }}</h4>
-                <h4 class="album-release">{{ rating.album.release }}</h4>
+                <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
+                <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
+                <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
         {% endfor %}
     </div>

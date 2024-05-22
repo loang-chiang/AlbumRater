@@ -1,24 +1,363 @@
 /* GENERAL STYLING */
-img {
-    width: 300px;
-    height: 300px;
-}
+    * {
+        font-family: "Roboto", sans-serif;
+        font-weight: 300;
+        font-style: normal;
+    }
+    
+    img {
+        width: 300px;
+        height: 300px;
+        border-radius: 10px;
+    }
+
+    html, .body {
+        min-height: 100vh;
+    }
+    
+    body {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .bi-star, .bi-star-fill {
+        display: inline;
+        font-size: 30px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    #album-stars {
+        text-align: center;
+        margin-top: auto;
+    }
+
+    strong {
+        color: #d60017;
+        font-weight: 400;
+    }
+
+    h5, h1 {
+        font-weight: 400;
+    }
+
+    /* for smaller devices */
+    @media only screen and (max-width: 1020px) {
+        body {
+            flex-direction: column;
+        }
+    }
 
 
-/*  */
-#cont-old {
-    display: none;
-}
+/* LAYOUT.HTML */
+    #title {
+        text-align: center;
+        font-weight: 400;
+    }
 
-#cont-high {
-    display: none;
-}
+    #title-and-nav {
+        flex-direction: column;
+        padding: 20px;
+        padding-left: 25px;
+        padding-right: 25px;
+        background-color: #f9f9f9;
+        border-right: 1px solid #c5c5c5;
+    }
 
-#cont-low {
-    display: none;
-}
+    .body {
+        padding: 20px;
+        background-color: white;
+        width: 100%;
+    }
+
+    h5 > a, div > a {
+        color: black;
+    }
+
+    .menu-link {
+        vertical-align: center;
+    }
+
+    div > a {
+        font-size: 17px;
+    }
+
+    .menu-item {
+        padding-left: 0px;
+        padding-bottom: 20px;
+    }
+
+    #menu-icon {
+        vertical-align: bottom;
+        padding-right: 5px;
+        color: #d60017;
+        font-size: 18px;
+    }
+
+    /* special for smaller screens */
+        @media only screen and (max-width: 1020px) {
+            #menu-nav {
+                display: flex;
+                justify-content: space-evenly;
+            }
+        }
+
+
+/* ALBUM. */
+    #album-data-img {
+        display: flex;
+    }
+
+    #album-data {
+        flex-direction: row;
+        margin-left: 30px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    #rating-and-review {
+        display: flex;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    #rating, #review {
+        margin: 10px;
+        margin-right: 20px;
+        margin-bottom: 0px;
+    }
+
+    #rating {
+        width: 200px;
+    }
+
+    #review-cont {
+        width: 80%;
+        max-width: 500px;
+        margin-top: 10px;
+    }
+
+    #review {
+        margin-top: 5px;
+        margin-left: 0px;
+        width: 100%;
+        height: 100px;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    #rating > h4, #review > h4 {
+        margin-bottom: 0px;
+    }
+
+    #stars-set, #stars-fluid {
+        margin-bottom: 20px;
+        flex-wrap: nowrap;
+    }
+
+    #tracklist {
+        padding-left: 0px;
+    }
+
+    #album-ol {
+        padding-left: 30px;
+    }
+
+    #album-ol > li {
+        padding-bottom: 5px;
+    }
+    
+    #album-ol > li::marker {
+        font-weight: bold;
+    }
+
+    .unsave-btn, .save-btn {
+        margin-top: 0px;
+        margin-left: 10px;
+    }
+
+    /* for smaller devices */
+    @media only screen and (max-width: 1020px) {
+        #rating-and-review {
+            flex-wrap: wrap;
+        }
+
+        #album-data-img {
+            flex-direction: column;
+        }
+
+        #album-img {
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 10px;
+        }
+
+        #rating-and-review {
+            justify-content: center;
+        }
+
+        #album-data {
+            text-align: center;
+        }
+
+        .unsave-btn, .save-btn {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+    }
+
+
+/* INDEX.HTML */
+    #search-form {
+        margin-top: 10px;
+    }
+
+    #search-form > input {
+        border: 1px solid #c5c5c5;
+        border-radius: 3px;
+    }
+
+    .albums-cont {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .album-div {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        margin-right: 20px;
+        padding: 10px;
+        width: 325px;
+        background-color: #f9f9f9;
+        border: 1px solid #c5c5c5;
+        border-radius: 10px;
+    }
+
+    .album-img {
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        padding-bottom: 10px;
+    }
+
+    .album-name {
+        text-align: center;
+        padding-right: 5px;
+        padding-left: 5px;
+        font-weight: 400;
+    }
+
+    .album-release, .album-artist, .album-review {
+        padding-left: 10px;
+        font-weight: 400;
+    }
+
+    .album-artist-release {
+        margin-top: auto;
+    }
+
+    /* for smaller devices */
+    @media only screen and (max-width: 1020px) {
+        #search-form {
+            width: 260px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        .albums-cont {
+            justify-content: center;
+        }
+    }
+
+
+/* LIBRARY.HTML */
+    #cont-old {
+        display: none;
+    }
+
+    #cont-high {
+        display: none;
+    }
+
+    #cont-low {
+        display: none;
+    }
+
+/* LOGIN.HTML */
+
+
+/* PROFILE.HTML */
+    #rating-user > strong, #profile-username {
+        color: #d60017;
+    }
+    
+    #profile-username {
+        font-weight: 500;
+    }
+
+
+/* RECENT.HTML */
+    #rating-cont {
+        display: flex;
+        margin-top: 20px;
+        padding: 10px;
+        max-width: 700px;
+        flex-shrink: 3;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #c5c5c5;
+    }
+
+    #rating-img {
+        width: 200px;
+        height: 200px;
+        margin-right: 20px;
+    }
+
+    #rating-data {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #rating-data > h5 {
+        padding-top: 5px;
+    }
+
+    #rating-likes-date {
+        margin-top: auto;
+        padding-bottom: 5px;
+    }
+
+    #rating-likes-date > p {
+        margin-bottom: 5px;
+    }
+
+    .pagination {
+        margin-top: 20px;
+    }
+
+    .bi-heart, .bi-heart-fill {
+        color: #d60017;
+    }
+
+    .pagination-btn {
+        color: #d60017;
+    }
+
+
+    /* for smaller devices */
+    @media only screen and (max-width: 500px) {
+        #rating-cont {
+            flex-direction: column;
+        }
+    }
+
+
+/* REGISTER */
+
 
 /* DELETE. FOR UNDERSTANDING PURPOSES ONLY */
-.album-div {
-    border: 1px solid black;
-} 
+    
