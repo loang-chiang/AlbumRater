@@ -26,7 +26,9 @@
                 <p>{{ rating.user.username }} gave {{ rating.rating }} stars to {{ rating.album.name }} </p>
 
                 {% if rating.review %}
-                    <p>"{{ rating.review }}"</p>
+                        <p>
+                            <i>"{{ rating.review }}"</i>
+                        </p>
                 {% endif %}
                 
                 <div id="rating-likes-date">

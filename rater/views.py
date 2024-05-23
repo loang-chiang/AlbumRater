@@ -20,8 +20,12 @@ def index(request):
 # loads album page
 def album(request, album_id):
     # checks if album has been saved by the user
-    profile = User.objects.get(username=request.user.username)
-    in_database = profile.saved_albums.filter(pk=album_id).exists()
+    try:
+        profile = User.objects.get(username=request.user.username)
+        in_database = profile.saved_albums.filter(pk=album_id).exists()
+    except (User.DoesNotExist):
+        profile = None
+        in_database = False
 
     # gets rating for template rendering
     try:
@@ -142,6 +146,7 @@ def recent(request):
         "page_obj": page_obj,
         "liked_ratings": liked_ratings
     })
+
 
 # likes a rating update
 @csrf_exempt

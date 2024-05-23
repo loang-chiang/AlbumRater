@@ -45,6 +45,14 @@
         color: #d60017;
     }
 
+    #empty {
+        margin-top: 20px;
+    }
+
+    i {
+        font-style: italic;
+    }
+
     /* for smaller devices */
     @media only screen and (max-width: 1020px) {
         body {
@@ -103,6 +111,11 @@
             #menu-nav {
                 display: flex;
                 justify-content: space-evenly;
+            }
+
+            #title-and-nav {
+                border-right: none;
+                border-bottom: 1px solid #c5c5c5;
             }
         }
 
@@ -252,6 +265,7 @@
         padding-right: 5px;
         padding-left: 5px;
         font-weight: 400;
+        margin-bottom: 20px;
     }
 
     .album-release, .album-artist, .album-review {
@@ -290,8 +304,6 @@
         display: none;
     }
 
-/* LOGIN.HTML */
-
 
 /* PROFILE.HTML */
     #rating-user > strong, #profile-username {
@@ -319,6 +331,11 @@
         width: 200px;
         height: 200px;
         margin-right: 20px;
+    }
+
+    #rating-img-cont {
+        display: flex;
+        align-items: center;
     }
 
     #rating-data {
@@ -358,10 +375,4 @@
             flex-direction: column;
         }
     }
-
-
-/* REGISTER */
-
-
-/* DELETE. FOR UNDERSTANDING PURPOSES ONLY */
     

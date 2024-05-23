@@ -74,11 +74,13 @@
         {% for rating in by_new %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
-                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h3 class="album-name">{{ rating.album.name }}</h2>
                 <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
                 <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
                 <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
+        {% empty %}
+            <h5 id="empty">Rate an album to add it to your library!</h5>
         {% endfor %}
     </div>
 
@@ -86,11 +88,13 @@
         {% for rating in by_old %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
-                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h3 class="album-name">{{ rating.album.name }}</h2>
                 <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
                 <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
                 <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
+        {% empty %}
+            <h5 id="empty">Rate an album to add it to your library!</h5>
         {% endfor %}
     </div>
 
@@ -98,11 +102,13 @@
         {% for rating in by_high %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
-                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h3 class="album-name">{{ rating.album.name }}</h2>
                 <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
                 <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
                 <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
+        {% empty %}
+            <h5 id="empty">Rate an album to add it to your library!</h5>
         {% endfor %}
     </div>
 
@@ -110,11 +116,13 @@
         {% for rating in by_low %}
             <div class="album-div" data-stars="{{ rating.rating }}" data-albumid="{{ rating.album.id }}">
                 <img class="album-img" src="{{ rating.album.img }}">
-                <h2 class="album-name">{{ rating.album.name }}</h2>
+                <h3 class="album-name">{{ rating.album.name }}</h2>
                 <h5 class="album-artist"><strong>Artist: </strong>{{ rating.album.artist }}</h5>
                 <h5 class="album-review"><strong>Review: </strong>{{ rating.review }}</h5>
                 <h5 class="album-release"><strong>Release: </strong>{{ rating.album.release }}</h5>
             </div>
+        {% empty %}
+            <h5 id="empty">Rate an album to add it to your library!</h5>
         {% endfor %}
     </div>
 

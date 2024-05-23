@@ -137,6 +137,9 @@ async function search(searchInput) {
         console.log("Album: " + album);
     }
 
+    // empties albums' container
+    document.querySelector(".albums-cont").innerHTML = "";
+
     // creates divs to display the albums
     albums.forEach(album => {
         // creates elements
@@ -303,6 +306,7 @@ function unsave_album(album) {
         window.location.href = `/album/${album.id}`;
     })
 }
+
 
 // likes a rating
 function like_rating(ratingID) {
