@@ -110,4 +110,3 @@ For the back-end, I used **Python** and **SQL** (SQLite) via Django models.
 * `.gitignore`: Contains a list of files that I wish for git to ignore, including the database file created by SQLite, cache files, and `config.js`, which stores my private Spotify API key.
 
 * `README.md`: The file you're reading right now! Detailing my project's functionality and explaining each file in it. **Thanks for reading!**
-
