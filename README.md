@@ -11,7 +11,7 @@ To save this album, the user must give it a rating of between 1 and 5 stars and,
 * Newest
 * Oldest
 * Highest rated
-* Lowest rated 
+* Lowest rated
 
 Another feature of the app is the Recents section where the user will be able to see the most recent reviews of the app's users and check their profiles which display some basic information about each user such as the number of ratings they have uploaded to the website, their average rating for albums, and a list of their ratings from newest to oldest. Any new rating created on the app will be automatically added to Recents.
 
